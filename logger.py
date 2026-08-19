@@ -1,29 +1,59 @@
 import logging
-from logging.handlers import RotatingFileHandler
 
-# Constants for the logger
-LOG_FILE = 'app.log'
-MAX_BYTES = 5 * 1024 * 1024  # 5 MB
-BACKUP_COUNT = 3
+class Logger:
+    """
+    A simple logger class for logging messages.
+    """
 
-def setup_logger():
-    # Create a logger
-    logger = logging.getLogger('AppLogger')
-    logger.setLevel(logging.DEBUG)
+    def __init__(self, name: str) -> None:
+        """
+        Initializes the Logger with a specified name.
+        
+        :param name: The name of the logger.
+        """
+        self.logger = logging.getLogger(name)
+        self.logger.setLevel(logging.DEBUG)
+        handler = logging.StreamHandler()
+        formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+        handler.setFormatter(formatter)
+        self.logger.addHandler(handler)
 
-    # Create a rotating file handler
-    handler = RotatingFileHandler(LOG_FILE, maxBytes=MAX_BYTES, backupCount=BACKUP_COUNT)
-    handler.setLevel(logging.DEBUG)
+    def debug(self, message: str) -> None:
+        """
+        Logs a message with level DEBUG.
+        
+        :param message: The message to log.
+        """
+        self.logger.debug(message)
 
-    # Create a formatter and set it for the handler
-    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
-    handler.setFormatter(formatter)
+    def info(self, message: str) -> None:
+        """
+        Logs a message with level INFO.
+        
+        :param message: The message to log.
+        """
+        self.logger.info(message)
 
-    # Add the handler to the logger
-    logger.addHandler(handler)
-    return logger
+    def warning(self, message: str) -> None:
+        """
+        Logs a message with level WARNING.
+        
+        :param message: The message to log.
+        """
+        self.logger.warning(message)
 
-# Example usage if this is run as a script
-if __name__ == '__main__':
-    logger = setup_logger()
-    logger.info('Logger setup complete.')
+    def error(self, message: str) -> None:
+        """
+        Logs a message with level ERROR.
+        
+        :param message: The message to log.
+        """
+        self.logger.error(message)
+
+    def critical(self, message: str) -> None:
+        """
+        Logs a message with level CRITICAL.
+        
+        :param message: The message to log.
+        """
+        self.logger.critical(message)
